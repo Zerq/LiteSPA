@@ -26,7 +26,7 @@ export class Menu extends HTMLElement {
                 <main>
                     <p>some text and stuff goes here.......</p>
                 </main>
-                <footer>By Omnicatz</footer>
+                <footer>By Arch 2024-10-25</footer>
             </article>
         ));
 

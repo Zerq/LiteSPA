@@ -1,0 +1,57 @@
+.outerWrapper{
+    margin-top: 30px;
+}
+
+.AppWrapper {
+    width: 80%;
+    background-color: #100;
+    margin-left: auto;
+    margin-right: auto;
+    border: solid 1px red;
+    border-radius: 5px;
+}
+
+
+body{
+    background-color: black;
+    color: white;
+}
+
+ 
+
+header.AppHeader {
+    display: flex;
+    height: 5em;
+    padding: 0.5em;
+ 
+        
+}
+
+
+header.AppHeader img {
+flex: 1;
+}
+
+
+
+
+
+header.AppHeader .AppTitle {
+    color:chocolate;
+    flex: 1;
+    align-self: center;
+
+}
+
+.AppWrapper > footer{
+    border-top: solid 1px red;
+    padding: 0.5em;
+
+}
+
+my-menu {
+flex: 100;
+}
+main#spaBody{
+padding: 1em;
+}

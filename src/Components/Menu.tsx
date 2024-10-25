@@ -21,6 +21,8 @@ export class Menu extends HTMLElement {
 
         this.shadowRoot.innerHTML = "";
         this.shadowRoot.appendChild(ToElement(
+            <div className="outerWrapper">
+                <link rel="stylesheet" href="../assets/menu-component.css" />
             <nav className="mainMenu" id={this.idInternal}>
                 <ul className="itemWrapper">
                     {
@@ -38,8 +40,10 @@ export class Menu extends HTMLElement {
                             }
                         })
                     }
+                    <li className="spring">&nbsp;</li>
                 </ul>
             </nav>
+            </div>
         ));
 
 

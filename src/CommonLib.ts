@@ -15,8 +15,6 @@ export function ToElement(element: ReactElement) {
     return <HTMLElement><unknown>element;
 }
 
-
-
 export interface IocContainer{
     Register<T, V extends T>(absCtr: AbsCtr<T>, ctr: Ctr<V>):void;
     Get<T, V extends T>(ctr: AbsCtr<T>): V;

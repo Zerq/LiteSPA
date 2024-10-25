@@ -1,0 +1,8 @@
+the ursula asset and Omnicatz is my personal branding 
+hence copyrighted and only here for example reasons so get your own logo! :p
+
+
+everything else should be under Lgpl except the jsx-runtime.js which is under ISC
+
+and originates form this article https://dev.to/devsmitra/how-to-create-the-app-using-jsx-without-react-k08
+(the live demo links package.json is set to ISC license)

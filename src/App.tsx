@@ -21,13 +21,13 @@ export class App extends HTMLElement {
 
     private router: RouterBase;
 
-    private renderView(viewName:string, ...params:KVP[]){
+    private renderView(viewName: string, ...params: KVP[]) {
         let main = this.shadowRoot.getElementById("spaBody") as HTMLMediaElement;
         main.innerHTML = "";
         const view = document.createElement(viewName);
 
-        params.forEach(n=> {
-            view.setAttribute(n.Name, n.Value)            
+        params.forEach(n => {
+            view.setAttribute(n.Name, n.Value)
         });
 
         main.appendChild(view);
@@ -41,26 +41,37 @@ export class App extends HTMLElement {
 
         this.router.RegisterSimplePath("#home", () => this.renderView("home-view"));
         this.router.RegisterSimplePath("#about", () => this.renderView("about-view"));
-        this.router.RegisterPath("#test/{intTest}/{boolTest}/{strTest}", (intTest,boolTest,strTest) => this.renderView("test-view", ...[intTest, boolTest, strTest]));
+        this.router.RegisterPath("#test/{intTest}/{boolTest}/{strTest}", (intTest, boolTest, strTest) => this.renderView("test-view", ...[intTest, boolTest, strTest]));
 
         window.addEventListener("hashchange", e => {
-            this.router.Route(location.hash);             
-            });
-        location.hash = "#home";
+            this.router.Route(location.hash);
+        });
+     
     }
 
-    public connectedCallback() {
+
+
+    private async connectCallBackAsync(): Promise<void>{
+     
+
         this.shadowRoot.innerHTML = "";
         this.shadowRoot.appendChild(ToElement(
-            <div>
-                <header>
-                    <my-menu id="appMenu" ></my-menu>
+        <div className="outerWrapper">
+            <link rel="stylesheet" href="./assets/main.css" />
+            <div className="AppWrapper">
+
+                <header className="AppHeader">
+                    <img src="./assets/Ursula.png" alt="Logo" /> <h1 className="AppTitle">Omnicatz</h1> <my-menu id="appMenu" ></my-menu>
                 </header>
                 <main id="spaBody"></main>
+                <footer>
+                    &copy; Omnicatz 2024 etc etc footer stuff...
+                </footer>
             </div>
+        </div>
         ));
 
-      
+
 
         let menu = this.shadowRoot.getElementById("appMenu") as Menu;
         menu.SetItems(
@@ -94,11 +105,13 @@ export class App extends HTMLElement {
 
         );
 
- 
-
         requestAnimationFrame(()=> {
-            this.router.Route("");
+            this.router.Route(location.hash);
         });
+    }
+
+    public connectedCallback() {
+        this.connectCallBackAsync().then();
     }
 
     //public disconnectedCallback() {  }
@@ -112,4 +125,8 @@ export class App extends HTMLElement {
 }
 
 
+
+function FetchText(arg0: string) {
+    throw new Error("Function not implemented.");
+}
 
