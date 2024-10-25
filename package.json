@@ -1,0 +1,21 @@
+{
+ "type": "module",
+    "scripts": {
+        "transpile": "tsc && gulp",
+        "fix": "dotnet ../jsxFix/bin/Debug/net8.0/jsxFix.dll ./src ./wwwroot",
+        "build": "npm run transpile &&  npm run fix",
+        "test": "npm run build && node ./wwwroot/myTest.js"      
+    },
+    "devDependencies": {
+"@types/node": "22.7.9",
+
+        "react":"18.3.1",
+        "gulp": "5.0.0",
+        "typescript": "5.4.5",
+        "@types/react": "18.3.11",
+        "@types/jest": "29.5.14",
+
+        "node":"22.10.0"
+    },
+    "dependencies": {}
+}
