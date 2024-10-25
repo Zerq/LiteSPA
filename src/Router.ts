@@ -1,13 +1,26 @@
 import { DeclareService, Service } from "./CommonLib.js";
 import { act } from "react";
 
-export type basicParamTypes = string | number | boolean;
+//export type basicParamTypes = string | number | boolean;
+
+export class KVP extends Object{
+    public constructor(public Name: string, public Value: string) {
+        super();    
+    }
+
+    public Type: "string" | "number" | "boolean";
+
+    
+    public override toString() {
+        return this.Value.toString();
+    }
+}
 
 export abstract class RouterBase {
     public abstract Route(newHash: string): void;
-    public abstract RegisterPath(format: string, action: (...params: basicParamTypes[]) => void);
+    public abstract RegisterPath(format: string, action: (...params: KVP[]) => void);
     public abstract RegisterSimplePath(format: string, action: () => void);
-    
+
 }
 
 export function getFunctionParams(func: Function): string[] {
@@ -25,10 +38,10 @@ export class Router extends RouterBase {
     }
 
     public EvaluateRoute(hash: string): () => void | null {
-        if (hash === "" || hash === "#"){
-            const home =  this.routes.find(n=> n.rawFormat == "#home");
-            if (home){
-                return ()=> home.action();
+        if (hash === "" || hash === "#") {
+            const home = this.routes.find(n => n.rawFormat == "#home");
+            if (home) {
+                return () => home.action();
             }
 
             return;
@@ -37,7 +50,7 @@ export class Router extends RouterBase {
         for (let i = 0; i < this.routes.length; i++) {
 
             let rex = new RegExp(this.routes[i].regex);
-            
+
             let matches = rex.exec(hash);
 
 
@@ -45,17 +58,22 @@ export class Router extends RouterBase {
                 continue;
             }
 
-            let polulatedParams = new Array<string>();
-            matches.forEach((match, i) => {
+            let populatedParams = new Array<KVP>();
+            let funcParams = getFunctionParams(this.routes[i].action);
+            
+            matches.shift();
+
+            matches.forEach((match, key) => {
                 let value = match;
-                polulatedParams.push(value);
-            });            
+                let name = funcParams[key];
+                populatedParams.push(new KVP(name, value));
+            });
 
- 
-            polulatedParams.shift();
 
-            if (polulatedParams) {
-                result = () => { this.routes[i].action(...polulatedParams); };
+          
+
+            if (populatedParams) {
+                result = () => { this.routes[i].action(...populatedParams); };
                 break;
             }
         }
@@ -63,19 +81,19 @@ export class Router extends RouterBase {
     }
 
 
-    public makeRegexString(inputFormat: string, ...params: basicParamTypes[]) {
+    public makeRegexString(inputFormat: string, ...params: string[]) {
         let format = inputFormat.toString();
         params.forEach((param, i) => {
 
-            if (!param.toString().startsWith("{")){
-                param =`{${param}}`;
+            if (!param.toString().startsWith("{")) {
+                param = `{${param}}`;
             }
 
             let end = format.indexOf(param.toString()) + param.toString().length;
             let separator = format.substring(end, end + 1);
 
             if (separator === "") {
-                format = format.replace(param.toString(), `(.*)`); //lastitem probably 
+                format = format.replace(param.toString(), `(.*)`); //last item probably 
             } else {
                 format = format.replace(param.toString(), `([^${separator}]*)`);
             }
@@ -83,7 +101,7 @@ export class Router extends RouterBase {
         return format.replaceAll("/", "\\/");
     }
 
-    public ParseParams(inputFormat: string, hash: string, ...params: basicParamTypes[]): string[] {
+    public ParseParams(inputFormat: string, hash: string, ...params: string[]): KVP[] {
         let rex = RegExp(this.makeRegexString(inputFormat, ...params));
         const matches = rex.exec(hash);
 
@@ -91,10 +109,11 @@ export class Router extends RouterBase {
             return null;
         }
 
-        let result = new Array<string>();
+        let result = new Array<KVP>();
         matches.forEach((match, i) => {
+            let key = params[i];
             let value = match;
-            result.push(value);
+            result.push(new KVP(key,value));
         });
         return result;
     }
@@ -117,7 +136,7 @@ export class Router extends RouterBase {
         }
     }
 
-    public RegisterSimplePath(format: string, action: () => void){
+    public RegisterSimplePath(format: string, action: () => void) {
         const index = this.routes.findIndex(n => n.rawFormat === format);
 
         if (index === -1) {

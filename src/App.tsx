@@ -5,11 +5,12 @@ import { Menu } from "./Components/Menu.js";
 
 import "./react/customComponentsFix.js";
 
-import { RouterBase } from "./Router.js";
+import { KVP, RouterBase } from "./Router.js";
 import { IOC } from "./CommonLib.js";
 
 import "./Views/home.js";
 import "./Views/about.js";
+import "./Views/test.js";
 
 
 
@@ -18,14 +19,17 @@ export class App extends HTMLElement {
 
     public static observedAttributes = ["app-name"];
 
-
-
     private router: RouterBase;
 
-    private renderView(viewName:string){
+    private renderView(viewName:string, ...params:KVP[]){
         let main = this.shadowRoot.getElementById("spaBody") as HTMLMediaElement;
         main.innerHTML = "";
         const view = document.createElement(viewName);
+
+        params.forEach(n=> {
+            view.setAttribute(n.Name, n.Value)            
+        });
+
         main.appendChild(view);
     }
 
@@ -35,14 +39,12 @@ export class App extends HTMLElement {
 
         this.router = IOC.Container.Get(RouterBase);
 
-
         this.router.RegisterSimplePath("#home", () => this.renderView("home-view"));
         this.router.RegisterSimplePath("#about", () => this.renderView("about-view"));
+        this.router.RegisterPath("#test/{intTest}/{boolTest}/{strTest}", (intTest,boolTest,strTest) => this.renderView("test-view", ...[intTest, boolTest, strTest]));
 
         window.addEventListener("hashchange", e => {
-
-            this.router.Route(location.hash); 
-            
+            this.router.Route(location.hash);             
             });
         location.hash = "#home";
     }
@@ -72,11 +74,27 @@ export class App extends HTMLElement {
                     Name: "About",
                     Type: "HashLink",
                     Hash: "about"
-                }
+                },
+                {
+                    Name: "Test 1",
+                    Type: "HashLink",
+                    Hash: "test/1/true/bob"
+                },
+                {
+                    Name: "Test 2",
+                    Type: "HashLink",
+                    Hash: "test/2/false/har"
+                },
+                {
+                    Name: "Test 3",
+                    Type: "HashLink",
+                    Hash: "test/3/true/zog"
+                },
             ]
 
         );
 
+ 
 
         requestAnimationFrame(()=> {
             this.router.Route("");
