@@ -6,7 +6,7 @@
     "type": "module",
     "scripts": {
         "transpile": "tsc && gulp",
-        "fix": "dotnet ../jsxFix/bin/Debug/net8.0/jsxFix.dll ./src ./wwwroot",
+        "fix": "dotnet ./bin/Debug/net8.0/OmniLite.dll ./src ./wwwroot",
         "build": "npm run transpile &&  npm run fix",
         "test": "npm run build && node ./wwwroot/myTest.js"
     },
