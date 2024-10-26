@@ -46,29 +46,30 @@ export class App extends HTMLElement {
         window.addEventListener("hashchange", e => {
             this.router.Route(location.hash);
         });
-     
+
     }
 
 
 
-    private async connectCallBackAsync(): Promise<void>{
-     
+    private async connectCallBackAsync(): Promise<void> {
+
 
         this.shadowRoot.innerHTML = "";
         this.shadowRoot.appendChild(ToElement(
-        <div className="outerWrapper">
-            <link rel="stylesheet" href="./assets/main.css" />
-            <div className="AppWrapper">
-
-                <header className="AppHeader">
-                    <img src="./assets/Ursula.png" alt="Logo" /> <h1 className="AppTitle">Omnicatz</h1> <my-menu id="appMenu" ></my-menu>
-                </header>
-                <main id="spaBody"></main>
-                <footer>
-                    &copy; Omnicatz 2024 etc etc footer stuff...
-                </footer>
+            <div className="outerWrapper">
+                <link rel="stylesheet" href="./assets/main.css" />
+                <div className="AppWrapper">
+                    <header className="AppHeader">
+                        <div className="headerWrapper">
+                            <img src="./assets/Ursula.png" alt="Logo" /> <h1 className="AppTitle">Omnicatz</h1> <my-menu id="appMenu" ></my-menu>
+                        </div>
+                    </header>
+                    <main id="spaBody"></main>
+                    <footer>
+                        &copy; Omnicatz 2024 etc etc footer stuff...
+                    </footer>
+                </div>
             </div>
-        </div>
         ));
 
 
@@ -105,7 +106,7 @@ export class App extends HTMLElement {
 
         );
 
-        requestAnimationFrame(()=> {
+        requestAnimationFrame(() => {
             this.router.Route(location.hash);
         });
     }

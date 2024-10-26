@@ -3,6 +3,7 @@ const newer = require("gulp-newer");
 
 exports.default = async function () {
 
+    src("./src/assets/*.svg", { encoding: false }, { base: "./src/assets" }).pipe(newer('wwwroot/assets/')).pipe(dest("wwwroot/assets/"));
 
     src("./src/assets/*.png", { encoding: false }, { base: "./src/assets" }).pipe(newer('wwwroot/assets/')).pipe(dest("wwwroot/assets/"));
 

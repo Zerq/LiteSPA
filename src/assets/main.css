@@ -1,4 +1,4 @@
-.outerWrapper{
+.outerWrapper {
     margin-top: 30px;
 }
 
@@ -8,28 +8,43 @@
     margin-left: auto;
     margin-right: auto;
     border: solid 1px red;
-    border-radius: 5px;
+    border-radius: 1em;
+    overflow: hidden;
 }
 
 
-body{
+body {
     background-color: black;
     color: white;
 }
 
- 
+
 
 header.AppHeader {
-    display: flex;
-    height: 5em;
-    padding: 0.5em;
+    display: flex; 
+    background: url(./noise.svg);
+    mix-blend-mode:lighten;
+    width: 100%;
+    border-bottom: solid 1px red;
  
-        
+}
+
+.headerWrapper{
+    display: flex;
+    height: 4em;
+    padding: 0.5em;
+    background: rgb(255, 139, 0);
+    background: linear-gradient(90deg, rgba(255, 139, 0, 0.9) 0%, rgba(42, 0, 0, 0.9) 44%);
+    mix-blend-mode: hard-light;
+    width: 100%;
 }
 
 
 header.AppHeader img {
-flex: 1;
+    flex: 1;
+    opacity: 0.9;
+    filter: drop-shadow(2px 4px 6px #510);
+
 }
 
 
@@ -37,21 +52,24 @@ flex: 1;
 
 
 header.AppHeader .AppTitle {
-    color:chocolate;
-    flex: 1;
+    color: white;
+    flex: 25;
     align-self: center;
-
+    filter: drop-shadow(2px 2px 2px rgba(255, 0, 0, 0.5));
+    position: relative;
+    left: 0.5em;
 }
 
-.AppWrapper > footer{
+.AppWrapper>footer {
     border-top: solid 1px red;
     padding: 0.5em;
 
 }
 
 my-menu {
-flex: 100;
+    flex: 100;
 }
-main#spaBody{
-padding: 1em;
+
+main#spaBody {
+    padding: 1em;
 }
