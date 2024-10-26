@@ -102,6 +102,21 @@ export class App extends HTMLElement {
                     Type: "HashLink",
                     Hash: "test/3/true/zog"
                 },
+                {
+                    Name: "Invert",
+                    Type: "ActionLink",
+                    Action: () => {
+                        //initially undefined
+                        if (document.body.style.backgroundColor === "white") {
+                            document.body.style.mixBlendMode = "normal";
+                            document.body.style.backgroundColor = "black"
+                        } else {
+                            document.body.style.mixBlendMode = "exclusion";
+                            document.body.style.backgroundColor = "white"
+                        }
+
+                    }
+                }
             ]
 
         );
