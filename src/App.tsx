@@ -11,8 +11,7 @@ import { IOC } from "./CommonLib.js";
 import "./Views/home.js";
 import "./Views/about.js";
 import "./Views/test.js";
-
-
+import "./Views/omnicatz-spa.js";
 
 @Component("my-app")
 export class App extends HTMLElement {
@@ -42,6 +41,8 @@ export class App extends HTMLElement {
         this.router.RegisterSimplePath("#home", () => this.renderView("home-view"));
         this.router.RegisterSimplePath("#about", () => this.renderView("about-view"));
         this.router.RegisterPath("#test/{intTest}/{boolTest}/{strTest}", (intTest, boolTest, strTest) => this.renderView("test-view", ...[intTest, boolTest, strTest]));
+        this.router.RegisterPath("#omnicatzSpa/{section}", (section)=> this.renderView("omnicatz-spa-view", ...[section]));
+
 
         window.addEventListener("hashchange", e => {
             this.router.Route(location.hash);
@@ -116,7 +117,12 @@ export class App extends HTMLElement {
                         }
 
                     }
-                }
+                },
+                {
+                    Name: "OmnicatzSPA",
+                    Type: "HashLink",
+                    Hash: "omnicatzSpa/test3"
+                },
             ]
 
         );
