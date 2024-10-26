@@ -10,6 +10,7 @@ exports.default = async function () {
     src([
         "./src/**/*.html",
         "./src/**/*.css",
+        "./src/**/*.txt"        
     ],
         { base: "./src" }).pipe(dest("wwwroot/"));
 

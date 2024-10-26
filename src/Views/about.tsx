@@ -3,14 +3,12 @@ import React from "react";
 
 @Component("about-view")
 export class Menu extends HTMLElement {
-
     public static observedAttributes = [];
 
     public constructor() {
         super();
         this.attachShadow({ mode: "open" });
     }
-
 
     private render() {
         if (this.shadowRoot === null) {
@@ -35,9 +33,6 @@ export class Menu extends HTMLElement {
                 <footer>By Arch 2024-10-25</footer>
             </article>
         ));
-
-
-
     }
 
     public connectedCallback() {
@@ -51,5 +46,3 @@ export class Menu extends HTMLElement {
 
     }
 }
-
-

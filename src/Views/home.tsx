@@ -11,7 +11,6 @@ export class Menu extends HTMLElement {
         this.attachShadow({ mode: "open" });
     }
 
-
     private render() {
         if (this.shadowRoot === null) {
             return;
@@ -29,9 +28,6 @@ export class Menu extends HTMLElement {
                 <footer>By Arch 2024-10-25</footer>
             </article>
         ));
-
-
-
     }
 
     public connectedCallback() {
@@ -45,5 +41,3 @@ export class Menu extends HTMLElement {
 
     }
 }
-
-

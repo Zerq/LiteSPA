@@ -20,7 +20,6 @@ export abstract class RouterBase {
     public abstract Route(newHash: string): void;
     public abstract RegisterPath(format: string, action: (...params: KVP[]) => void);
     public abstract RegisterSimplePath(format: string, action: () => void);
-
 }
 
 export function getFunctionParams(func: Function): string[] {
@@ -50,9 +49,7 @@ export class Router extends RouterBase {
         for (let i = 0; i < this.routes.length; i++) {
 
             let rex = new RegExp(this.routes[i].regex);
-
             let matches = rex.exec(hash);
-
 
             if (!matches) {
                 continue;
@@ -67,10 +64,7 @@ export class Router extends RouterBase {
                 let value = match;
                 let name = funcParams[key];
                 populatedParams.push(new KVP(name, value));
-            });
-
-
-          
+            });          
 
             if (populatedParams) {
                 result = () => { this.routes[i].action(...populatedParams); };
@@ -79,7 +73,6 @@ export class Router extends RouterBase {
         }
         return result;
     }
-
 
     public makeRegexString(inputFormat: string, ...params: string[]) {
         let format = inputFormat.toString();
@@ -152,7 +145,6 @@ export class Router extends RouterBase {
                 regex: format
             };
         }
-
     }
     protected routes: Array<{ rawFormat: string, regex: string, action: Function }> = [];
 }

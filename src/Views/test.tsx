@@ -11,7 +11,6 @@ export class Test extends HTMLElement {
         this.attachShadow({ mode: "open" });
     }
 
-
     private render() {
         if (this.shadowRoot === null) {
             return;

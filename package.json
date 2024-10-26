@@ -1,12 +1,16 @@
 {
-    "licenses": [
-        "LGPL",
-        "some assets under copyright"
+ 
+    "licenses":[
+        { "type":"ISC","url" : "https://opensource.org/licenses/ISC"},
+        {"type":"LGPL-3.0-or-later", "url": "https://www.gnu.org/licenses/lgpl-3.0.en.html"},
+        {"type": "assetCopyright", "url": "https://localhost:7184/assets/assetCopyrightInfo.txt" }
     ],
+    
+      
     "type": "module",
     "scripts": {
         "transpile": "tsc && gulp",
-        "fix": "dotnet ./bin/Debug/net8.0/OmniLite.dll ./src ./wwwroot",
+        "fix": "dotnet ./bin/Debug/net8.0/LiteSPA.dll ./src ./wwwroot",
         "build": "npm run transpile &&  npm run fix",
         "test": "npm run build && node ./wwwroot/myTest.js"
     },
@@ -18,7 +22,8 @@
         "typescript": "5.4.5",
         "@types/react": "18.3.11",
         "@types/jest": "29.5.14",
-        "node": "22.10.0"
+        "node": "22.10.0",
+        "@microsoft/signalr":"8.0.7"
     },
     "dependencies": {}
 }

@@ -1,17 +1,13 @@
-
 import { Component, Service, ToElement } from "./CommonLib.js";
 import "./Components/Menu.js";
 import { Menu } from "./Components/Menu.js";
-
 import "./react/customComponentsFix.js";
-
 import { KVP, RouterBase } from "./Router.js";
 import { IOC } from "./CommonLib.js";
-
 import "./Views/home.js";
 import "./Views/about.js";
 import "./Views/test.js";
-import "./Views/omnicatz-spa.js";
+import "./Views/litespa.js";
 
 @Component("my-app")
 export class App extends HTMLElement {
@@ -35,26 +31,20 @@ export class App extends HTMLElement {
     public constructor() {
         super();
         this.attachShadow({ mode: "open" });
-
         this.router = IOC.Container.Get(RouterBase);
 
         this.router.RegisterSimplePath("#home", () => this.renderView("home-view"));
         this.router.RegisterSimplePath("#about", () => this.renderView("about-view"));
         this.router.RegisterPath("#test/{intTest}/{boolTest}/{strTest}", (intTest, boolTest, strTest) => this.renderView("test-view", ...[intTest, boolTest, strTest]));
-        this.router.RegisterPath("#omnicatzSpa/{section}", (section)=> this.renderView("omnicatz-spa-view", ...[section]));
+        this.router.RegisterPath("#litespa/{section}", (section)=> this.renderView("lite-spa-view", ...[section]));
 
 
         window.addEventListener("hashchange", e => {
             this.router.Route(location.hash);
         });
-
     }
 
-
-
     private async connectCallBackAsync(): Promise<void> {
-
-
         this.shadowRoot.innerHTML = "";
         this.shadowRoot.appendChild(ToElement(
             <div className="outerWrapper">
@@ -72,8 +62,6 @@ export class App extends HTMLElement {
                 </div>
             </div>
         ));
-
-
 
         let menu = this.shadowRoot.getElementById("appMenu") as Menu;
         menu.SetItems(
@@ -115,16 +103,14 @@ export class App extends HTMLElement {
                             document.body.style.mixBlendMode = "exclusion";
                             document.body.style.backgroundColor = "white"
                         }
-
                     }
                 },
                 {
-                    Name: "OmnicatzSPA",
+                    Name: "LiteSPA Documentation",
                     Type: "HashLink",
-                    Hash: "omnicatzSpa/test3"
+                    Hash: "litespa/Intro"
                 },
             ]
-
         );
 
         requestAnimationFrame(() => {
@@ -146,9 +132,6 @@ export class App extends HTMLElement {
     }
 }
 
-
-
 function FetchText(arg0: string) {
     throw new Error("Function not implemented.");
 }
-

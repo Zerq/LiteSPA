@@ -1,5 +1,4 @@
- 
-
+//this ensure  that it can be run in brower or in terminal without throwing errors
 export function getDoc(): Document{
     try {
         return document;
@@ -17,7 +16,7 @@ function setStyle(){
             style.id = "testStyle";
             style.innerHTML = `
         body { background-color:black;}
-           .Good{color:Green;}
+    .Good{color:Green;}
     .Info{color:white;}
     .Warn{ color:orange;}
     .Error{color:red;     font-weight: bold;}
@@ -34,7 +33,7 @@ export async function TestAsync(name: string, test:  () => Promise<boolean>) {
     setStyle();
     Text(`-----${name} test-----`, MessageType.Info);
     try {
-       return await test();
+        return await test();
     } catch (err) {
         Text("X test failed: " + err, MessageType.Warn);
         return false;
@@ -47,7 +46,7 @@ export function Test(name: string, test: () => boolean) {
 
     Text(`-----${name} test-----`, MessageType.Info);
     try {
-       return test();
+        return test();
     } catch (err) {
         Text("X test failed: " + err, MessageType.Warn);
         return false;
@@ -57,7 +56,7 @@ export function Test(name: string, test: () => boolean) {
 
 export async function TestSuitAsync (tests: ()=> Promise<boolean>){
     let result = await tests();
-  
+
     if (result){
         Text("TestSuit passed", MessageType.Good);
     }else {

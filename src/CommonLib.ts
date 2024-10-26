@@ -1,10 +1,8 @@
 
 import { ReactElement } from "react";
- 
 
 /** abstract class type */
 export type AbsCtr<T> = Function & { prototype: T };
-
 
 /** non-abstract class type */
 export interface Ctr<T> {
@@ -39,7 +37,6 @@ export class IOC{
     }
 }
 
-
 export function Service<T, V extends T>(absCtr: AbsCtr<V>) {
     return function (target: any, propertyKey: string) {
         let instance = IOC.Container.Get(absCtr);
@@ -53,13 +50,9 @@ export function DeclareService<T, V extends T>(absCtr: AbsCtr<V>) {
     };
 }
 
-
-
-
-
 /** attribute that register a customElement on the class... file must be imported though ie 'import "./some.js;' so that this attribute is called... 
  * if you do a 'import { SomeClass } from "./some.js";' it wont run.*/
- export function Component<T extends HTMLElement>(name: string) {
+export function Component<T extends HTMLElement>(name: string) {
     return (ctor: Ctr<T>) => {
         customElements.define(name, ctor);
     }
