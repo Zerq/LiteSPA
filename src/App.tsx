@@ -17,8 +17,8 @@ export class App extends HTMLElement {
     private router: RouterBase;
 
     lastView: string;
-    private renderView(viewName: string, ...params: KVP[]) {
-        if (viewName == this.lastView){
+    private renderView(viewName: string, params = new Array<KVP>(),noReRender = false) {
+        if (viewName === this.lastView && noReRender){
             let main = this.shadowRoot.getElementById("spaBody") as HTMLMediaElement;
             const view = main.children[0];
             view.setAttribute("firstRender", "false");
@@ -51,8 +51,8 @@ export class App extends HTMLElement {
 
         this.router.RegisterSimplePath("#home", () => this.renderView("home-view"));
         this.router.RegisterSimplePath("#about", () => this.renderView("about-view"));
-        this.router.RegisterPath("#test/{intTest}/{boolTest}/{strTest}", (intTest, boolTest, strTest) => this.renderView("test-view", ...[intTest, boolTest, strTest]));
-        this.router.RegisterPath("#litespa/{section}", (section)=> this.renderView("lite-spa-view",...[section]));
+        this.router.RegisterPath("#test/{intTest}/{boolTest}/{strTest}", (intTest, boolTest, strTest) => this.renderView("test-view", [intTest, boolTest, strTest]));
+        this.router.RegisterPath("#litespa/{section}", (section)=> this.renderView("lite-spa-view", [section],true));
 
 
         window.addEventListener("hashchange", e => {
