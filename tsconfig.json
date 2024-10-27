@@ -12,8 +12,7 @@
         "sourceRoot": "src"
     },
     "paths":{
-        "React": ["src/react/*"]
-
+        "React":   ["src/libs/Litespa/src/react/*"]
     },
     "exclude": [
         "nodeModules",

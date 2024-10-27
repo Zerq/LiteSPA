@@ -1,66 +1,30 @@
-import { Component, Service, ToElement } from "./CommonLib.js";
+import { Component, ToElement, AppBase, Router } from "./libs/litespa/index.js";
 import "./Components/Menu.js";
 import { Menu } from "./Components/Menu.js";
-import "./react/customComponentsFix.js";
-import { KVP, RouterBase } from "./Router.js";
-import { IOC } from "./CommonLib.js";
-import "./Views/home.js";
-import "./Views/about.js";
-import "./Views/test.js";
-import "./Views/litespa.js";
-
+import "./libs/litespa/src/react/customComponentsFix.js";
 @Component("my-app")
-export class App extends HTMLElement {
-
-    public static observedAttributes = ["app-name"];
-
-    private router: RouterBase;
-
-    lastView: string;
-    private renderView(viewName: string, params = new Array<KVP>(),noReRender = false) {
-        if (viewName === this.lastView && noReRender){
-            let main = this.shadowRoot.getElementById("spaBody") as HTMLMediaElement;
-            const view = main.children[0];
-            view.setAttribute("firstRender", "false");
-            params.forEach(n => {
-                view.setAttribute(n.Name, n.Value);
-            }); 
-            return;
-        }
-
-        this.lastView = viewName;
-
-        let main = this.shadowRoot.getElementById("spaBody") as HTMLMediaElement;
-        main.innerHTML = "";
-
-        const view = document.createElement(viewName);
-        view.setAttribute("firstRender", "true");
-        params.forEach(n => {
-            view.setAttribute(n.Name, n.Value);
-        });
-
-    
-        main.appendChild(view);
+export class App extends AppBase {
+    public async LoadViews(): Promise<void> {
+        await import("./Views/home.js");
+        await import("./Views/about.js");
+        await import("./Views/test.js");
+        await import("./Views/litespa.js");      
     }
 
-
-    public constructor() {
-        super();
-        this.attachShadow({ mode: "open" });
-        this.router = IOC.Container.Get(RouterBase);
-
+    public AppRouting() {
         this.router.RegisterSimplePath("#home", () => this.renderView("home-view"));
         this.router.RegisterSimplePath("#about", () => this.renderView("about-view"));
         this.router.RegisterPath("#test/{intTest}/{boolTest}/{strTest}", (intTest, boolTest, strTest) => this.renderView("test-view", [intTest, boolTest, strTest]));
-        this.router.RegisterPath("#litespa/{section}", (section)=> this.renderView("lite-spa-view", [section],true));
-
-
-        window.addEventListener("hashchange", e => {
-            this.router.Route(location.hash);
-        });
+        this.router.RegisterPath("#litespa/{section}", (section) => this.renderView("lite-spa-view", [section], true));
     }
 
-    private async connectCallBackAsync(): Promise<void> {
+    public static observedAttributes = ["app-name"];
+
+    public getAppBody() {
+        return this.shadowRoot?.getElementById("spaBody") as HTMLElement;
+    }
+
+    private async Render(): Promise<void> {
         this.shadowRoot.innerHTML = "";
         this.shadowRoot.appendChild(ToElement(
             <div className="outerWrapper">
@@ -68,7 +32,7 @@ export class App extends HTMLElement {
                 <div className="AppWrapper">
                     <header className="AppHeader">
                         <div className="headerWrapper">
-                            <img src="./assets/Ursula.png" alt="Logo" /> <h1 className="AppTitle">Omnicatz</h1> <my-menu id="appMenu" ></my-menu>
+                            <img src="./assets/Ursula.png" alt="Logo" /> <h1 className="AppTitle">{document.title}</h1> <my-menu id="appMenu" ></my-menu>
                         </div>
                     </header>
                     <main id="spaBody"></main>
@@ -124,7 +88,7 @@ export class App extends HTMLElement {
                 {
                     Name: "LiteSPA Documentation",
                     Type: "HashLink",
-                    Hash: "litespa/Intro"                    
+                    Hash: "litespa/Intro"
                 },
             ]
         );
@@ -135,19 +99,13 @@ export class App extends HTMLElement {
     }
 
     public connectedCallback() {
-        this.connectCallBackAsync().then();
+        this.Render().then();
     }
-
-    //public disconnectedCallback() {  }
-    //public adoptedCallback() {  }
-
+    
     public attributeChangedCallback(name: string, oldValue: any, newValue: any) {
         if (name === "app-name") {
             document.title = newValue;
+            this.Render().then();
         }
     }
-}
-
-function FetchText(arg0: string) {
-    throw new Error("Function not implemented.");
 }

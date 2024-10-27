@@ -1,51 +1,31 @@
-import { DeclareService, Service } from "./CommonLib.js";
-import { act } from "react";
+import { IOC } from "./IOC.js";
+import { KVP } from "./KVP.js";
+import { getFunctionParams } from "./getFunctionParams.js";
+import { RouterBase } from "./RouterBase.js";
 
-//export type basicParamTypes = string | number | boolean;
+type VoidFunc = () => void;
 
-export class KVP extends Object{
-    public constructor(public Name: string, public Value: string) {
-        super();    
-    }
-
-    public Type: "string" | "number" | "boolean";
-
-    
-    public override toString() {
-        return this.Value.toString();
-    }
-}
-
-export abstract class RouterBase {
-    public abstract Route(newHash: string): void;
-    public abstract RegisterPath(format: string, action: (...params: KVP[]) => void);
-    public abstract RegisterSimplePath(format: string, action: () => void);
-}
-
-export function getFunctionParams(func: Function): string[] {
-    let txt = func.toString();
-    let start = txt.indexOf("(") + 1;
-    let end = txt.indexOf(")");
-    return txt.substring(start, end).split(",").map(n => n.trim());
-}
-
-@DeclareService(RouterBase)
 export class Router extends RouterBase {
+
+    public static InitializeService(){
+        IOC.Container.Register(RouterBase, Router);
+    }
+
     public Route(newHash: string): void {
         const x = this.EvaluateRoute(newHash);
         x?.();
     }
 
-    public EvaluateRoute(hash: string): () => void | null {
+    public EvaluateRoute(hash: string): VoidFunc | null {
         if (hash === "" || hash === "#") {
             const home = this.routes.find(n => n.rawFormat == "#home");
             if (home) {
                 return () => home.action();
             }
 
-            return;
+            return null;
         }
-        let result: () => void | null = null;
+        let result: VoidFunc | null = null;
         for (let i = 0; i < this.routes.length; i++) {
 
             let rex = new RegExp(this.routes[i].regex);
@@ -99,7 +79,7 @@ export class Router extends RouterBase {
         const matches = rex.exec(hash);
 
         if (!matches) {
-            return null;
+            return [];
         }
 
         let result = new Array<KVP>();

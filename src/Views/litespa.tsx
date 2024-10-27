@@ -1,6 +1,6 @@
 import { MenuItem } from "../Components/MenuItem.js";
-import { Menu } from "../Components/Menu"
-import { Component, ToElement } from "../CommonLib.js";
+import { Menu } from "../Components/Menu.js"
+import { Component, ToElement } from "../libs/litespa/index.js";
 import React from "react";
 
 @Component("lite-spa-view")

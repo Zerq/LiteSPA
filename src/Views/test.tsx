@@ -1,4 +1,4 @@
-import { Component, ToElement } from "../CommonLib.js";
+import { Component, ToElement } from "../libs/litespa/index.js";
 import React from "react";
 
 @Component("test-view")

@@ -4,14 +4,15 @@
 <head>
     <title>...</title>
     <link rel="stylesheet" href="./assets/app.css" />
-    <script async type="module">
-        await import("./Router.js");
+    <script async type="module">  
+        const {Router}  = await import ("./libs/litespa/index.js");
+        Router.InitializeService();  
         await import("./App.js");     
     </script>
 </head>
 
 <body>
-    <my-app app-name="My Test App"></my-app>
+    <my-app app-name="Omnicatz"></my-app>
 </body>
 
 </html>
