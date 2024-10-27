@@ -16,17 +16,33 @@ export class App extends HTMLElement {
 
     private router: RouterBase;
 
+    lastView: string;
     private renderView(viewName: string, ...params: KVP[]) {
+        if (viewName == this.lastView){
+            let main = this.shadowRoot.getElementById("spaBody") as HTMLMediaElement;
+            const view = main.children[0];
+            view.setAttribute("firstRender", "false");
+            params.forEach(n => {
+                view.setAttribute(n.Name, n.Value);
+            }); 
+            return;
+        }
+
+        this.lastView = viewName;
+
         let main = this.shadowRoot.getElementById("spaBody") as HTMLMediaElement;
         main.innerHTML = "";
-        const view = document.createElement(viewName);
 
+        const view = document.createElement(viewName);
+        view.setAttribute("firstRender", "true");
         params.forEach(n => {
-            view.setAttribute(n.Name, n.Value)
+            view.setAttribute(n.Name, n.Value);
         });
 
+    
         main.appendChild(view);
     }
+
 
     public constructor() {
         super();
@@ -36,7 +52,7 @@ export class App extends HTMLElement {
         this.router.RegisterSimplePath("#home", () => this.renderView("home-view"));
         this.router.RegisterSimplePath("#about", () => this.renderView("about-view"));
         this.router.RegisterPath("#test/{intTest}/{boolTest}/{strTest}", (intTest, boolTest, strTest) => this.renderView("test-view", ...[intTest, boolTest, strTest]));
-        this.router.RegisterPath("#litespa/{section}", (section)=> this.renderView("lite-spa-view", ...[section]));
+        this.router.RegisterPath("#litespa/{section}", (section)=> this.renderView("lite-spa-view",...[section]));
 
 
         window.addEventListener("hashchange", e => {
@@ -108,7 +124,7 @@ export class App extends HTMLElement {
                 {
                     Name: "LiteSPA Documentation",
                     Type: "HashLink",
-                    Hash: "litespa/Intro"
+                    Hash: "litespa/Intro"                    
                 },
             ]
         );

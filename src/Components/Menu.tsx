@@ -6,7 +6,7 @@ import React from "react";
 @Component("my-menu")
 export class Menu extends HTMLElement {
 
-    public static observedAttributes = ["id"];
+    public static observedAttributes = ["id", "orientation"];
 
     public constructor() {
         super();
@@ -21,7 +21,7 @@ export class Menu extends HTMLElement {
 
         this.shadowRoot.innerHTML = "";
         this.shadowRoot.appendChild(ToElement(
-            <div className="outerWrapper">
+            <div className={"outerWrapper " + this.orientationInternal}>
                 <link rel="stylesheet" href="../assets/menu-component.css" />
             <nav className="mainMenu" id={this.idInternal}>
                 <ul className="itemWrapper">
@@ -40,7 +40,7 @@ export class Menu extends HTMLElement {
                             }
                         })
                     }
-                    <li className="spring">&nbsp;</li>
+                    <div className="spring">&nbsp;</div>
                 </ul>
             </nav>
             </div>
@@ -65,12 +65,18 @@ export class Menu extends HTMLElement {
         this.render();
     }
 
+    private orientationInternal: Orientation = "Horizontal";
+
     public attributeChangedCallback(name: string, oldValue: any, newValue: any) {
         if (name === "id") {
             this.idInternal = newValue;
             this.render();
         }
+        if (name === "orientation") {
+            this.orientationInternal = newValue;
+            this.render();
+        }
     }
 }
-
+export type Orientation = "Horizontal"| "Vertical";
 

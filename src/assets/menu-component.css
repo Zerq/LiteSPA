@@ -1,13 +1,13 @@
-.outerWrapper{
+.outerWrapper.Horizontal {
     height: 100%;
 }
 
 
-nav.mainMenu {
+.Horizontal  nav.mainMenu {
     height: 100%;
 }
 
-ul {
+.Horizontal  ul {
     list-style: none;
     display: flex;
     height: 100%;
@@ -15,19 +15,19 @@ ul {
     padding: 0;
 }
 
-li {
+.Horizontal  li {
     flex: auto;
     align-self: center;
     padding: 0.5em;
     
 }
 
-li.spring {
+.Horizontal  div.spring {
     flex:100;
 
 }
 
-li a { 
+.Horizontal li a { 
     color: white;
     display: block;
     text-align: center;
@@ -38,7 +38,57 @@ li a {
     filter: drop-shadow(2px 2px 2px rgba(255, 0, 0, 0.5));
 }
 
-li a:hover {
+.Horizontal i a:hover {
+    color:yellow;    
+    cursor:pointer;    
+    filter: drop-shadow(2px 2px 2px rgba(255, 255, 255, 0.5));
+}
+
+
+
+
+.outerWrapper.Vertical {
+    height: 100%;
+}
+
+
+.Vertical  nav.mainMenu {
+    height: 100%;
+}
+
+.Vertical  ul {
+    list-style: none;
+    flex-direction: column;
+    display: flex;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.Vertical  li {
+    flex: auto;
+    align-self: center;
+    padding: 0.5em;
+    
+}
+
+.Vertical  div.spring {
+    flex:100;
+
+}
+
+.Vertical li a { 
+    color: white;
+    display: block;
+    text-align: center;
+    text-decoration:none;
+    cursor:default;
+    font-weight: bold;
+    font-size: large;
+    filter: drop-shadow(2px 2px 2px rgba(255, 0, 0, 0.5));
+}
+
+.Vertical i a:hover {
     color:yellow;    
     cursor:pointer;    
     filter: drop-shadow(2px 2px 2px rgba(255, 255, 255, 0.5));

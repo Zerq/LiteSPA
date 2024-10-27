@@ -1,0 +1,11 @@
+.displayFlex{
+    display:flex;;
+}
+
+.articles{
+    height: 80vh;
+    overflow-y: auto;
+    scrollbar-color: red darkred;
+    scrollbar-width: thin;
+
+}
