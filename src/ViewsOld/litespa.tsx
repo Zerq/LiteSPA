@@ -1,16 +1,30 @@
+import { MenuItem } from "../Components/MenuItem.js";
 import { Menu } from "../Components/Menu.js"
-import { ComponentBase } from "../libs/litespa/ComponentBase.js";
-import { LiteComponent } from "../libs/litespa/Component.js";
+import { Component} from "../libs/litespa/Component.js";
 import { ToElement } from "../libs/litespa/ToElement.js";
-import { wrap } from "module";
 
-@LiteComponent("lite-spa-view")
-export class LiteSPA extends ComponentBase {
-    public AttributeChange(attributeMutation: MutationRecord) {
- 
+
+@Component("lite-spa-view")
+export class LiteSPA extends HTMLElement {
+
+    public static observedAttributes = ["firstRender", "section"];
+
+    public constructor() {
+        super();
+        this.attachShadow({ mode: "open" });
+
+        let item = new Array<MenuItem>()
+
     }
-    protected render(wrapper: HTMLElement): HTMLElement {
-        wrapper.appendChild(ToElement(
+
+    private render() {
+        if (this.shadowRoot === null) {
+            return;
+        }
+
+
+        this.shadowRoot.innerHTML = "";
+        this.shadowRoot.appendChild(ToElement(
             <div className="displayFlex">
                 <link rel="stylesheet" href="./assets/litespa.css" />
                 <my-menu id="articleOverview" orientation="Vertical"></my-menu>
@@ -68,58 +82,52 @@ export class LiteSPA extends ComponentBase {
                 </div>
             </div>
         ));
-        return wrapper;
+
+        requestAnimationFrame(() => {
+
+            const menu = this.shadowRoot?.getElementById("articleOverview") as Menu;
+            menu?.SetItems([
+                {
+                    Name: "intro",
+                    Type: "HashLink",
+                    Hash: "#litespa/intro"
+                },
+                {
+                    Name: "hooplatest",
+                    Type: "HashLink",
+                    Hash: "#litespa/hooplatest"
+                },
+                {
+                    Name: "hooplatest2",
+                    Type: "HashLink",
+                    Hash: "#litespa/hooplatest2"
+                }
+            ]);
+
+        });
+
     }
 
-    protected postRenderAction(): void {
-        const menu = this.ElementContainer.querySelector("#articleOverview") as Menu;
-        menu?.SetItems([
-            {
-                Name: "intro",
-                Type: "HashLink",
-                Hash: "#litespa/intro"
-            },
-            {
-                Name: "hooplatest",
-                Type: "HashLink",
-                Hash: "#litespa/hooplatest"
-            },
-            {
-                Name: "hooplatest2",
-                Type: "HashLink",
-                Hash: "#litespa/hooplatest2"
-            }
-        ]);
+    public connectedCallback() {
+        this.render();
     }
 
-    private section_: string;
-    public get section() {
-        return this.section_;
-    }
-    public set section(value: string) {
-        if (value === "true" || value === "false") {
-            throw ("invalid boolean");
+    //public disconnectedCallback() {  }
+    //public adoptedCallback() {  }
+
+    public attributeChangedCallback(name: string, oldValue: any, newValue: any) {
+        if (name ==="firstRender" && newValue === "true"){
+            this.render();
         }
-        this.section_ = value;
-
-
-        if (this.firstrender) {
-            this.Render();
-        }
-    }
-
-    private firstrender_: string;
-    public get firstrender() {
-        return this.section_;
-    }
-    public set firstrender(value: string) {
-        if (value === "true" || value === "false") {
-            throw ("invalid boolean");
-        }
-        this.section_ = value;
-
-        if (this.firstrender) {
-            this.Render();
+        
+        if (name === "section") {
+            setTimeout(() => {
+                const element = this.shadowRoot?.getElementById(newValue);
+                element?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }, 0);
         }
     }
 }

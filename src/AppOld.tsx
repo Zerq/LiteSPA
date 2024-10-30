@@ -1,36 +1,43 @@
-import { LiteComponent } from "./libs/litespa/Component.js";
-import { ToElement } from "./libs/litespa/ToElement.js";
-import { AppBase } from "./libs/litespa/AppBase.js";
+import { Component }from "./libs/litespa/Component.js";
+import { ToElement }from "./libs/litespa/ToElement.js";
+import { AppBase }from "./libs/litespa/AppBaseOld.js";
+import {ComponentBase} from "./libs/litespa/ComponentBase.js"
 import "./Components/Menu.js";
 import { Menu } from "./Components/Menu.js";
-import { UpdatingProp } from "./libs/litespa/ComponentBase.js";
+import { ReactElement } from "react";
+import { LiteSPA } from "./libs/litespa/LiteSPA.js";
 
-@LiteComponent("my-app")
+@Component("my-app")
 export class App extends AppBase {
-    public AttributeChange(attributeMutation: MutationRecord) {
- 
-    }
     public async LoadViews(): Promise<void> {
-        await import("./Views/home.js");
-        await import("./Views/about.js");
-        await import("./Views/test.js");
-        await import("./Views/litespa.js");
+        await import("./ViewsOld/home.js");
+        await import("./ViewsOld/about.js");
+        await import("./ViewsOld/test.js");
+        await import("./ViewsOld/litespa.js");      
     }
 
     public AppRouting() {
         this.router.RegisterSimplePath("#home", () => this.renderView("home-view"));
         this.router.RegisterSimplePath("#about", () => this.renderView("about-view"));
-        this.router.RegisterPath("#test/{inttest}/{booltest}/{strtest}", (inttest, booltest, strtest) => this.renderView("test-view", [inttest, booltest, strtest]));
+        this.router.RegisterPath("#test/{intTest}/{boolTest}/{strTest}", (intTest, boolTest, strTest) => this.renderView("test-view", [intTest, boolTest, strTest]));
         this.router.RegisterPath("#litespa/{section}", (section) => this.renderView("lite-spa-view", [section], true));
     }
 
+    public static observedAttributes = ["app-name"];
+
     public getAppBody() {
-        return this.ElementContainer.querySelector("#spaBody") as HTMLElement;
+        return this.shadowRoot?.getElementById("spaBody") as HTMLElement;
     }
 
-    protected render(wrapper: HTMLElement): HTMLElement {
-        wrapper.appendChild(ToElement(
+    private async Render(): Promise<void> {
+        this.shadowRoot.innerHTML = "";
+        this.shadowRoot.appendChild(ToElement(
             <div className="outerWrapper">
+                <my-list id="bob1">
+                    <item name="something" value="zog" />
+                    <item name="something1" value="zog2" />
+                    <item name="something2" value="zog3" />                    
+                </my-list>
                 <link rel="stylesheet" href="./assets/main.css" />
                 <div className="AppWrapper">
                     <header className="AppHeader">
@@ -45,11 +52,8 @@ export class App extends AppBase {
                 </div>
             </div>
         ));
-        return this.ElementContainer;
-    }
 
-    protected postRenderAction() {
-        let menu = this.ElementContainer.querySelector("#appMenu") as Menu;
+        let menu = this.shadowRoot.getElementById("appMenu") as Menu;
         menu.SetItems(
             [
                 {
@@ -102,11 +106,16 @@ export class App extends AppBase {
         requestAnimationFrame(() => {
             this.router.Route(location.hash);
         });
+    }
 
-    };
+    public connectedCallback() {
+        this.Render().then();
+    }
 
-    @UpdatingProp((t, k) => {
-        console.log(t[k]);
-    })
-    public appname: string;
+    public attributeChangedCallback(name: string, oldValue: any, newValue: any) {
+        if (name === "app-name") {
+            document.title = newValue;
+            this.Render().then();
+        }
+    }
 }

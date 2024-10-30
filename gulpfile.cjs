@@ -19,5 +19,5 @@ exports.default = async function () {
         "./src/**/*tsx"],
 
 
-        { base: "./src" }).pipe(dest("wwwroot/src/"));
+        { base: "./src" }).pipe(dest("wwwroot/"));
 };

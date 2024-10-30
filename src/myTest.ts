@@ -1,4 +1,4 @@
-import { Router } from "./libs/litespa/index.js";
+import { Router } from "./libs/litespa/Router.js";
 
 import { Test, TestAsync, Text, MessageType, Assert,TestSuitAsync } from "./Test.js";
 

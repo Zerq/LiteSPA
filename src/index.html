@@ -5,14 +5,14 @@
     <title>...</title>
     <link rel="stylesheet" href="./assets/app.css" />
     <script async type="module">  
-        const {Router}  = await import ("./libs/litespa/index.js");
-        Router.InitializeService();  
-        await import("./App.js");     
+        const {Run} = await import("./entry.js");
+        await Run();
+     
     </script>
 </head>
 
 <body>
-    <my-app app-name="Omnicatz"></my-app>
+
 </body>
 
 </html>

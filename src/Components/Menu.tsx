@@ -1,5 +1,6 @@
 import { MenuItem } from "./MenuItem.js"
-import { Component, ToElement } from "../libs/litespa/index.js";
+import { Component} from "../libs/litespa/Component.js";
+import { ToElement } from "../libs/litespa/ToElement.js";
 import React from "react";
 
 

@@ -25,12 +25,20 @@ public class TsxFix
          var map = outputFilePath + ".map";
 
          var text = System.IO.File.ReadAllText(outputFilePath)
+
          .Replace(
             @"import { jsx as _jsx } from ""react/jsx-runtime"";",
-            $@"import {{ jsx as _jsx }} from ""{depthModifier}react/jsx-runtime.js"";"
-         ).Replace(
+            $@"import {{ jsx as _jsx }} from ""{depthModifier}libs/litespa/react/jsx-runtime.js"";"
+         )        
+         .Replace(
+            @"import { jsxs as _jsxs, jsx as _jsx } from ""react/jsx-runtime"";",
+            $@"import {{ jsxs as _jsxs, jsx as _jsx }} from ""{depthModifier}libs/litespa/react/jsx-runtime.js"";"
+         )
+         .Replace("{ className:", "{ class:")
+         .Replace(
+
             @"import { jsx as _jsx, jsxs as _jsxs } from ""react/jsx-runtime"";",
-            $@"import {{ jsx as _jsx, jsxs as _jsxs }} from ""{depthModifier}react/jsx-runtime.js"";"
+            $@"import {{ jsx as _jsx, jsxs as _jsxs }} from ""{depthModifier}libs/litespa/react/jsx-runtime.js"";"
          ).Replace("{ className:", "{ class:");
 
          fixMap(map, depth);

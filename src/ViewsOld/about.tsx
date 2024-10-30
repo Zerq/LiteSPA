@@ -1,16 +1,22 @@
-import { ComponentBase } from "../libs/litespa/ComponentBase.js";
-import { LiteComponent} from "../libs/litespa/Component.js";
+import { Component} from "../libs/litespa/Component.js";
 import { ToElement } from "../libs/litespa/ToElement.js";
 
-@LiteComponent("about-view")
-export class Menu extends ComponentBase {
-    public AttributeChange(attributeMutation: MutationRecord) {
- 
+@Component("about-view")
+export class Menu extends HTMLElement {
+    public static observedAttributes = [];
+
+    public constructor() {
+        super();
+        this.attachShadow({ mode: "open" });
     }
-    protected postRenderAction(): void {}
-    protected render(wrapper:HTMLElement):HTMLElement {
-        wrapper.innerHTML = "";
-        wrapper.appendChild(ToElement(
+
+    private render() {
+        if (this.shadowRoot === null) {
+            return;
+        }
+
+        this.shadowRoot.innerHTML = "";
+        this.shadowRoot.appendChild(ToElement(
             <article>
                 <header>
                     <h3>About this template</h3>
@@ -27,6 +33,16 @@ export class Menu extends ComponentBase {
                 <footer>By Arch 2024-10-25</footer>
             </article>
         ));
-        return wrapper;
+    }
+
+    public connectedCallback() {
+        this.render();
+    }
+
+    //public disconnectedCallback() {  }
+    //public adoptedCallback() {  }
+
+    public attributeChangedCallback(name: string, oldValue: any, newValue: any) {
+
     }
 }

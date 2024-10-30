@@ -1,23 +1,16 @@
-import { Component, ToElement } from "../libs/litespa/index.js";
-import React from "react";
+import { ComponentBase } from "../libs/litespa/ComponentBase.js";
+import { LiteComponent} from "../libs/litespa/Component.js";
+import { ToElement } from "../libs/litespa/ToElement.js";
 
-@Component("home-view")
-export class Menu extends HTMLElement {
-
-    public static observedAttributes = [];
-
-    public constructor() {
-        super();
-        this.attachShadow({ mode: "open" });
+@LiteComponent("home-view")
+export class Menu extends ComponentBase {
+    public AttributeChange(attributeMutation: MutationRecord) {
+ 
     }
-
-    private render() {
-        if (this.shadowRoot === null) {
-            return;
-        }
-
-        this.shadowRoot.innerHTML = "";
-        this.shadowRoot.appendChild(ToElement(
+    protected postRenderAction(): void {}
+    protected render(wrapper:HTMLElement):HTMLElement {
+        wrapper.innerHTML = "";
+        wrapper.appendChild(ToElement(
             <article>
                 <header>
                     <h3>Hello world!</h3>
@@ -28,16 +21,6 @@ export class Menu extends HTMLElement {
                 <footer>By Arch 2024-10-25</footer>
             </article>
         ));
-    }
-
-    public connectedCallback() {
-        this.render();
-    }
-
-    //public disconnectedCallback() {  }
-    //public adoptedCallback() {  }
-
-    public attributeChangedCallback(name: string, oldValue: any, newValue: any) {
-
+        return wrapper;
     }
 }

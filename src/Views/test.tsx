@@ -1,60 +1,61 @@
-import { Component, ToElement } from "../libs/litespa/index.js";
-import React from "react";
+import { ComponentBase } from "../libs/litespa/ComponentBase.js";
+import { LiteComponent} from "../libs/litespa/Component.js";
+import { ToElement } from "../libs/litespa/ToElement.js";
 
-@Component("test-view")
-export class Test extends HTMLElement {
-
-    public static observedAttributes = ["intVal", "boolTest", "strTest"];
-
-    public constructor() {
-        super();
-        this.attachShadow({ mode: "open" });
+@LiteComponent("test-view")
+export class Menu extends ComponentBase {
+    public AttributeChange(attributeMutation: MutationRecord) {
+ 
     }
-
-    private render() {
-        if (this.shadowRoot === null) {
-            return;
-        }
-
-        if (!this.getAttribute("inttest")){
-            return;
-        }
-        
-        if (!this.getAttribute("booltest")){
-            return;
-        }
-
-        if (!this.getAttribute("strtest")){
-            return;
-        }
-        
-        this.shadowRoot.innerHTML = "";
-        this.shadowRoot.appendChild(ToElement(
+    protected postRenderAction(): void {}
+    protected render(wrapper:HTMLElement):HTMLElement {
+        wrapper.innerHTML = "";
+        wrapper.appendChild(ToElement(
             <article>
                 <dl>
                     <dt>intVal</dt>
-                    <dd>{this.getAttribute("inttest")}</dd>
-
+                    <dd>{this.intVal}</dd>
                     <dt>intVal</dt>
-                    <dd>{this.getAttribute("booltest")}</dd>
-
+                    <dd>{this.boolVal}</dd>
                     <dt>intVal</dt>
-                    <dd>{this.getAttribute("strtest")}</dd>
+                    <dd>{this.strVal}</dd>
                 </dl>
             </article>
         ));
+        return wrapper;
     }
 
-    public connectedCallback() {
-        this.render();
+
+    private intVal:string;
+    public get inttest(){
+        return this.intVal;
+    }
+    public set inttest(value:string){
+        if (!Number.isInteger(((value as unknown)as number)*1)){
+            throw("invalid integer");
+        }
+        this.intVal = value;
+        this.Render();
     }
 
-    //public disconnectedCallback() {  }
-    //public adoptedCallback() {  }
-
-    public attributeChangedCallback(name: string, oldValue: any, newValue: any) {
-        if (name === "inttest" ||name === "booltest" ||name === "strtest" ){
-            this.render();
-        }      
+    private boolVal:string;
+    public get booltest(){
+        return this.boolVal;
     }
+    public set booltest(value:string){  
+        if (!(value === "true" || value === "false")){
+            throw("invalid boolean");
+        }
+        this.boolVal = value;
+        this.Render();
+    }
+
+    private strVal:string;
+    public get strTest(){
+        return this.strVal;
+    }
+    public set strtest(value:string){  
+        this.strVal = value;
+        this.Render();
+    }  
 }
