@@ -1,7 +1,8 @@
 import { IOC } from "./IOC.js";
 import { KVP } from "./KVP.js";
 import { RouterBase } from "./RouterBase.js";
-
+import "./react/customComponentsFix.js";
+import "./react/jsx-runtime.js";
 
 export abstract class AppBase extends HTMLElement {
     protected router: RouterBase;

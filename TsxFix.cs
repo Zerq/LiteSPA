@@ -26,11 +26,8 @@ public class TsxFix
 
          var text = System.IO.File.ReadAllText(outputFilePath)
          .Replace(
-            @"import { jsx as _jsx } from ""react/jsx-runtime"";",
-            $@"import {{ jsx as _jsx }} from ""{depthModifier}react/jsx-runtime.js"";"
-         ).Replace(
-            @"import { jsx as _jsx, jsxs as _jsxs } from ""react/jsx-runtime"";",
-            $@"import {{ jsx as _jsx, jsxs as _jsxs }} from ""{depthModifier}react/jsx-runtime.js"";"
+            "\"react/jsx-runtime\";",
+            $"\"{depthModifier}libs/litespa/src/react/jsx-runtime.js\";"
          ).Replace("{ className:", "{ class:");
 
          fixMap(map, depth);

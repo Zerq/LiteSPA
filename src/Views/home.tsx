@@ -2,7 +2,7 @@ import { Component, ToElement } from "../libs/litespa/index.js";
 import React from "react";
 
 @Component("home-view")
-export class Menu extends HTMLElement {
+export class HomeView extends HTMLElement {
 
     public static observedAttributes = [];
 
