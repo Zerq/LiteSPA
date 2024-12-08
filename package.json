@@ -8,7 +8,7 @@
     "type": "module",
     "scripts": {
         "transpile": "tsc && gulp",
-        "fix": "dotnet ./bin/Debug/net8.0/LiteSPA.dll ./src ./wwwroot",
+        "fix": "dotnet script tsxFix.csx",
         "build": "npm run transpile &&  npm run fix",
         "test": "npm run build && node ./wwwroot/myTest.js"
     },

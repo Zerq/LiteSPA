@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Runtime.Serialization.Formatters;
 using System.Text.RegularExpressions;
+
 public class TsxFix
 {
    private static void doDirectory(DirectoryInfo sourceDirectory, string outputPath, int depth)
