@@ -3,18 +3,39 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters.Xml;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.ObjectPool;
-public class Program
-{
-   public static void Main(params string[] args)
-   {
-      if (args.Length > 0){
-         TsxFix.Run(args);
-      }
-      else{
-         WebApp.Run();
-      }
-   }
 
-}
+ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+      var builder = WebApplication.CreateBuilder();
+      builder.Services.AddControllers()
+         .AddJsonOptions(options =>
+         {
+            options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
+            options.JsonSerializerOptions.PropertyNamingPolicy = null;
+         });
+
+      builder.Services.AddCors();
+
+      var app = builder.Build();
+      app.UseHttpsRedirection();
+
+      app.UseCors(MyAllowSpecificOrigins);
+      app.UseRouting();
+      app.MapDefaultControllerRoute();
+      app.MapControllers();
+
+      app.UseDefaultFiles();
+
+      var extensionpProvider = new FileExtensionContentTypeProvider();
+      extensionpProvider.Mappings.Add(".tsx", "text/plain");
+
+      app.UseStaticFiles(new StaticFileOptions
+      {
+         ServeUnknownFileTypes = true,
+         ContentTypeProvider = extensionpProvider,
+      });
+
+      app.Run();
