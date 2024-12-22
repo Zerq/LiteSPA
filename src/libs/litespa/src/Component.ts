@@ -5,3 +5,6 @@ export function Component<T extends HTMLElement>(name: string) {
         customElements.define(name, ctor);
     };
 }
+
+
+
