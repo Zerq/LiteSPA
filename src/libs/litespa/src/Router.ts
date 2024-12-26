@@ -1,15 +1,15 @@
-import { IOC } from "./IOC.js";
-import { KVP } from "./KVP.js";
-import { getFunctionParams } from "./getFunctionParams.js";
-import { RouterBase } from "./RouterBase.js";
+import { getFunctionParams } from "./getFunctionParams";
+import { KVP } from "./KVP";
 
+export interface RouterLike{
+    Route(newHash: string): void;
+    RegisterPath(format: string, action: (...params: KVP[]) => void);
+    RegisterSimplePath(format: string, action: () => void);
+}
 type VoidFunc = () => void;
 
-export class Router extends RouterBase {
+export class Router implements RouterLike {
 
-    public static InitializeService(){
-        IOC.Container.Register(RouterBase, Router);
-    }
 
     public Route(newHash: string): void {
         const x = this.EvaluateRoute(newHash);

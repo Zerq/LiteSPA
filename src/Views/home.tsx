@@ -1,23 +1,30 @@
-import { Component, ToElement } from "../libs/litespa/index.js";
 import React from "react";
+import { Component } from "libs/litespa/src/Component.js";
+import { ComponentBase } from "../libs/litespa/src/ComponentBase.js";
+import { ToElement } from "libs/litespa/src/ToElement.js";
 
 @Component("home-view")
-export class HomeView extends HTMLElement {
+export class HomeView extends ComponentBase {
+    public AddEventListener(type: string, listener: unknown): void {
+        this.Root.addEventListener(type, listener as any);
+    }
+    public SetAttribute(name: string, value: unknown) {
+      this.Root.setAttribute(name, value  as string);
+    }
 
     public static observedAttributes = [];
 
-    public constructor() {
-        super();
-        this.attachShadow({ mode: "open" });
+    public constructor(name:string, children: Array<HTMLElement>|HTMLElement) {
+        super(name, children);
     }
 
-    private render() {
-        if (this.shadowRoot === null) {
+    public Render(): Promise<void> {
+        if (this.Root === null) {
             return;
         }
 
-        this.shadowRoot.innerHTML = "";
-        this.shadowRoot.appendChild(ToElement(
+        this.Root.innerHTML = "";
+        this.Root.appendChild(ToElement(
             <article>
                 <header>
                     <h3>Hello world!</h3>
@@ -31,7 +38,7 @@ export class HomeView extends HTMLElement {
     }
 
     public connectedCallback() {
-        this.render();
+        this.Render().then();
     }
 
     //public disconnectedCallback() {  }

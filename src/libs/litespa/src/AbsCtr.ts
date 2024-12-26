@@ -5,3 +5,7 @@ export type AbsCtr<T> = Function & { prototype: T; };
 export interface Ctr<T> {
     new(): T;
 }
+
+export interface ComponentCtr<T> {
+    new(tag:string, children: Array<HTMLElement> | HTMLElement): T;
+}

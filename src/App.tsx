@@ -1,9 +1,20 @@
-import { Component, ToElement, AppBase, Router } from "./libs/litespa/index.js";
+ 
+import { Component } from "./libs/litespa/src/Component.js";
+import { AppBase } from "libs/litespa/src/AppBase.js";
 import "./Components/Menu.js";
 import { Menu } from "./Components/Menu.js";
 import "./libs/litespa/src/react/customComponentsFix.js";
+import { ToElement } from "libs/litespa/src/ToElement.js";
 @Component("my-app")
 export class App extends AppBase {
+    public AddEventListener(type: string, listener: unknown): void {
+        this.Root.addEventListener(type, listener as any);
+    }
+    
+    public SetAttribute(name: string, value: unknown) {
+      this.Root.setAttribute(name, value  as string);
+    }
+
     public async LoadViews(): Promise<void> {
         await import("./Views/home.js");
         await import("./Views/about.js");
@@ -12,21 +23,21 @@ export class App extends AppBase {
     }
 
     public AppRouting() {
-        this.router.RegisterSimplePath("#home", () => this.renderView("home-view"));
-        this.router.RegisterSimplePath("#about", () => this.renderView("about-view"));
-        this.router.RegisterPath("#test/{intTest}/{boolTest}/{strTest}", (intTest, boolTest, strTest) => this.renderView("test-view", [intTest, boolTest, strTest]));
-        this.router.RegisterPath("#litespa/{section}", (section) => this.renderView("lite-spa-view", [section], true));
+      window.Omnicatz.Router.RegisterSimplePath("#home", () => this.renderView("home-view"));
+      window.Omnicatz.Router.RegisterSimplePath("#about", () => this.renderView("about-view"));
+      window.Omnicatz.Router.RegisterPath("#test/{intTest}/{boolTest}/{strTest}", (intTest, boolTest, strTest) => this.renderView("test-view", [intTest, boolTest, strTest]));
+      window.Omnicatz.Router.RegisterPath("#litespa/{section}", (section) => this.renderView("lite-spa-view", [section], true));
     }
 
     public static observedAttributes = ["app-name"];
 
     public getAppBody() {
-        return this.shadowRoot?.getElementById("spaBody") as HTMLElement;
+        return this.Root?.querySelector("#spaBody") as HTMLElement;
     }
 
-    private async Render(): Promise<void> {
-        this.shadowRoot.innerHTML = "";
-        this.shadowRoot.appendChild(ToElement(
+    public async Render(): Promise<void> {
+        this.Root.innerHTML = "";
+        this.Root.appendChild(ToElement(
             <div className="outerWrapper">
                 <link rel="stylesheet" href="./assets/main.css" />
                 <div className="AppWrapper">
@@ -43,7 +54,7 @@ export class App extends AppBase {
             </div>
         ));
 
-        let menu = this.shadowRoot.getElementById("appMenu") as Menu;
+        let menu = this.Root.querySelector("#appMenu") as Menu;
         menu.SetItems(
             [
                 {
@@ -94,7 +105,7 @@ export class App extends AppBase {
         );
 
         requestAnimationFrame(() => {
-            this.router.Route(location.hash);
+           window.Omnicatz.Router.Route(location.hash);
         });
     }
 
